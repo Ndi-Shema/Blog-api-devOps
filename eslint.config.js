@@ -1,6 +1,7 @@
 // eslint.config.js
-module.exports = {
-  root: true,
+const { defineConfig } = require('eslint');
+
+module.exports = defineConfig({
   env: {
     node: true,
     es2021: true,
@@ -12,5 +13,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
   },
-  rules: {},
-};
+  rules: {
+    // Add any custom rules here
+  },
+});
