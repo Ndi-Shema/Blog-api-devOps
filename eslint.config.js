@@ -2,18 +2,27 @@
 const { defineConfig } = require('eslint');
 
 module.exports = defineConfig({
-  env: {
-    node: true,
-    es2021: true,
+  languageOptions: {
+    globals: {
+      // Define global variables here if needed
+    },
+    parserOptions: {
+      ecmaVersion: 2021,
+    },
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:node/recommended',
+  plugins: [
+    // List your plugins here
   ],
-  parserOptions: {
-    ecmaVersion: 12,
-  },
   rules: {
-    // Add any custom rules here
+    'indent': ['error', 2],
+    'quotes': ['error', 'single'],
+    'semi': ['error', 'always'],
+    'no-unused-vars': ['error', { 'args': 'none' }],
+    'no-console': 'warn',
+    'linebreak-style': ['error', 'unix'],
+    'camelcase': ['error', { properties: 'always' }],
+    'strict': ['error', 'global'],
+    'no-magic-numbers': ['warn', { 'ignore': [0, 1] }],
+    'consistent-return': 'error',
   },
 });
