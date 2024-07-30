@@ -1,21 +1,24 @@
-const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const logger = require('../logger'); // Assuming you have a logger setup
 
-exports.register = async (req, res) => {
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) {
+    logger.warn('No token provided');
+    return res.sendStatus(401); // Unauthorized
   }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      logger.error('Token verification failed:', err);
+      return res.sendStatus(403); // Forbidden
+    }
+    req.user = user;
+    next();
+  });
 };
 
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user || !(await user.comparePassword(password))) {
-    return res.status(401).json({ error: 'Invalid credentials' });
-  }
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  res.json({ token });
-};
+module.exports = authenticateToken;
