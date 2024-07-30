@@ -23,7 +23,7 @@ jobs:
     - name: Run tests
       run: npm test
     - name: Security scan
-      uses: snyk/actions/node@v1
+      uses: snyk/actions/node@master
       with:
         args: test
       env:
