@@ -1,11 +1,9 @@
 const express = require('express');
-const { createPost, getPosts, updatePost, deletePost } = require('../controllers/postController');
-const { auth } = require('../middleware/authMiddleware');
 const router = express.Router();
 
-router.post('/', auth, createPost);
-router.get('/', getPosts);
-router.put('/:id', auth, updatePost);
-router.delete('/:id', auth, deletePost);
+// Assuming you have a controller function like this
+const { createPost } = require('../controllers/postController');
+
+router.post('/create', createPost);  // Make sure 'createPost' is defined and imported correctly
 
 module.exports = router;
