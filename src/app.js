@@ -12,8 +12,16 @@ const logger = require('./logger');
 // Example usage:
 logger.info('Server is starting...');
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    logger.info('MongoDB connected successfully');
+  })
+  .catch((err) => {
+    logger.error('MongoDB connection error:', err);
+  });
 
+// Set up routes
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 
