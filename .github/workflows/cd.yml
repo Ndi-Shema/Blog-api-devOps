@@ -12,16 +12,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build Docker image
-      run: docker build -t your_dockerhub_username/your_app_name .
+      run: docker build -t shemafred24/blog-api-devops .
     - name: Log in to Docker Hub
       run: echo ${{ secrets.DOCKER_HUB_PASSWORD }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
     - name: Push Docker image
-      run: docker push your_dockerhub_username/your_app_name
-    - name: Deploy to DigitalOcean
+      run: docker push shemafred24/blog-api-devops
+    - name: Deploy to Render
+      env:
+        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.DO_SSH_USER }}@${{ secrets.DO_IP_ADDRESS }} << 'EOF'
-        docker pull your_dockerhub_username/your_app_name
-        docker stop your_app_container || true
-        docker rm your_app_container || true
-        docker run -d -p 80:3000 --name your_app_container your_dockerhub_username/your_app_name
-        EOF
+        curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d '{"serviceId": "srv-cqjrst0gph6c739da4q0"}' \
+          https://api.render.com/v1/services/srv-cqjrst0gph6c739da4q0/deploys
