@@ -1,6 +1,7 @@
 const Post = require('../models/post');
 
 exports.createPost = (req, res) => {
+  console.log('createPost function is called');
   // Your logic for handling post creation
   res.send('Post created!');
 };
