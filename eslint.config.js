@@ -1,11 +1,6 @@
 // eslint.config.js
-const { defineConfig } = require('eslint');
-
-module.exports = defineConfig({
+module.exports = {
   languageOptions: {
-    globals: {
-      // Define global variables here if needed
-    },
     parserOptions: {
       ecmaVersion: 2021,
     },
@@ -25,4 +20,4 @@ module.exports = defineConfig({
     'no-magic-numbers': ['warn', { 'ignore': [0, 1] }],
     'consistent-return': 'error',
   },
-});
+};
